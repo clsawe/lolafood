@@ -3,12 +3,18 @@ import { persist } from 'zustand/middleware'
 import { DELIVERY_FEE, FREE_DELIVERY_FROM, PROMO_CODES } from '../config'
 import type { CartLine, Order, Product } from '../types'
 
-export const lineKey = (l: { product: Product; withAddon: boolean }) =>
-  l.product.id + (l.withAddon ? '+sous' : '')
+export const lineKey = (l: {
+  product: Product
+  withAddon: boolean
+  size?: string
+}) => l.product.id + (l.withAddon ? '+sous' : '') + (l.size ? '+' + l.size : '')
 
-export const linePrice = (l: CartLine) =>
-  (l.product.price + (l.withAddon && l.product.addon ? l.product.addon.price : 0)) *
-  l.qty
+export const unitPrice = (l: CartLine) =>
+  (l.size
+    ? (l.product.sizes?.find((s) => s.label === l.size)?.price ?? l.product.price)
+    : l.product.price) + (l.withAddon && l.product.addon ? l.product.addon.price : 0)
+
+export const linePrice = (l: CartLine) => unitPrice(l) * l.qty
 
 interface Profile {
   name: string
@@ -25,7 +31,7 @@ interface State {
   promo: string | null
   sheet: Product | null
   toast: string | null
-  addToCart: (p: Product, qty: number, withAddon: boolean) => void
+  addToCart: (p: Product, qty: number, withAddon: boolean, size?: string) => void
   changeQty: (key: string, delta: number) => void
   removeLine: (key: string) => void
   clearCart: () => void
@@ -47,13 +53,17 @@ export const useStore = create<State>()(
       sheet: null,
       toast: null,
 
-      addToCart: (p, qty, withAddon) => {
-        const key = p.id + (withAddon ? '+sous' : '')
+      addToCart: (p, qty, withAddon, size) => {
+        const key = p.id + (withAddon ? '+sous' : '') + (size ? '+' + size : '')
         const cart = [...get().cart]
         const found = cart.find((l) => lineKey(l) === key)
         if (found) found.qty += qty
-        else cart.push({ product: p, qty, withAddon })
-        set({ cart, sheet: null, toast: `${p.name} savatga qo'shildi` })
+        else cart.push({ product: p, qty, withAddon, size })
+        set({
+          cart,
+          sheet: null,
+          toast: `${p.name}${size ? ' ' + size : ''} savatga qo'shildi`,
+        })
       },
 
       changeQty: (key, delta) =>
@@ -94,8 +104,9 @@ export const useStore = create<State>()(
           items: cart.map((l) => ({
             name: l.product.name,
             qty: l.qty,
-            price: l.product.price,
+            price: unitPrice(l),
             withAddon: l.withAddon,
+            size: l.size,
           })),
           subtotal: afterDiscount,
           deliveryFee,
@@ -117,7 +128,7 @@ export const useStore = create<State>()(
         }),
     }),
     {
-      name: 'lola-lavash-v1',
+      name: 'lola-lavash-v2',
       partialize: (s) => ({
         cart: s.cart,
         orders: s.orders,

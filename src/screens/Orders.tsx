@@ -71,6 +71,7 @@ export default function Orders({ go }: { go: (t: Tab) => void }) {
                 >
                   <span>
                     {it.qty} × {it.name}
+                    {it.size ? ` (${it.size})` : ''}
                     {it.withAddon && ' + sous'}
                   </span>
                   <span>{fmt(it.qty * it.price)}</span>

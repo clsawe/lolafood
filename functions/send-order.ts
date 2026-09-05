@@ -32,7 +32,9 @@ export const onRequestPost = async ({ request, env }: Context) => {
 
   const lines = (order.items ?? []).map(
     (it: any) =>
-      `  • ${it.qty} × ${it.name}${it.withAddon ? ' (+chisnoq sous)' : ''} — ${f(it.qty * it.price)} so'm`,
+      `  • ${it.qty} × ${it.name}${it.size ? ` (${it.size})` : ''}${
+        it.withAddon ? ' (+chisnoq sous)' : ''
+      } — ${f(it.qty * it.price)} so'm`,
   )
 
   const text = [

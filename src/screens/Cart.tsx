@@ -120,6 +120,9 @@ export default function Cart({ go }: { go: (t: Tab) => void }) {
               />
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-extrabold">{l.product.name}</p>
+                {l.size && (
+                  <p className="text-[11px] font-bold text-ink-500">{l.size}</p>
+                )}
                 {l.withAddon && l.product.addon && (
                   <p className="text-[11px] font-bold text-brand-600">
                     + {l.product.addon.name}

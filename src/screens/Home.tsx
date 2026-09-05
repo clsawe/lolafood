@@ -176,7 +176,14 @@ export default function Home({ go }: { go: (t: Tab, cat?: string) => void }) {
           <IconStar className="h-5 w-5 text-amber-400" /> Tavsiya etamiz
         </h2>
         <div className="no-scrollbar -mx-4 mt-3 flex gap-3 overflow-x-auto px-4 pb-1">
-          {recommended.concat(PRODUCTS.filter((p) => p.category === 'setlar')).slice(0, 6).map((p) => (
+          {recommended
+            .concat(
+              PRODUCTS.filter(
+                (p) => p.category === 'setlar' && !p.recommended,
+              ),
+            )
+            .slice(0, 6)
+            .map((p) => (
             <div key={p.id} className="w-40 shrink-0">
               <ProductCard product={p} />
             </div>

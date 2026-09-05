@@ -25,12 +25,14 @@ export interface Product {
   popular?: boolean
   recommended?: boolean
   addon?: { id: string; name: string; price: number }
+  sizes?: { label: string; price: number }[]
 }
 
 export interface CartLine {
   product: Product
   qty: number
   withAddon: boolean
+  size?: string
 }
 
 export interface OrderItem {
@@ -38,6 +40,7 @@ export interface OrderItem {
   qty: number
   price: number
   withAddon: boolean
+  size?: string
 }
 
 export interface Order {

@@ -12,6 +12,7 @@ export default function ProductCard({
   layout?: 'grid' | 'row'
 }) {
   const openSheet = useStore((s) => s.openSheet)
+  const base = product.sizes?.[0]?.price ?? product.price
 
   if (layout === 'row') {
     return (
@@ -34,7 +35,7 @@ export default function ProductCard({
             {product.desc}
           </span>
           <span className="mt-1 block text-sm font-black text-brand-600">
-            {fmt(product.price)}
+            {fmt(base)}
           </span>
         </span>
         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-600 text-white shadow-card">
@@ -69,7 +70,7 @@ export default function ProductCard({
         </span>
         <span className="mt-1 flex items-center justify-between">
           <span className="text-[13px] font-black text-brand-600">
-            {fmt(product.price)}
+            {fmt(base)}
           </span>
           <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-50 text-brand-600">
             <IconPlus className="h-3.5 w-3.5" />

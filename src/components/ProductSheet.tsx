@@ -11,15 +11,21 @@ export default function ProductSheet() {
   const openSheet = useStore((s) => s.openSheet)
   const [qty, setQty] = useState(1)
   const [withAddon, setWithAddon] = useState(false)
+  const [size, setSize] = useState<string | null>(null)
 
   const close = () => {
     openSheet(null)
     setQty(1)
     setWithAddon(false)
+    setSize(null)
   }
 
+  const selectedSize = product?.sizes?.find(
+    (s) => s.label === (size ?? product.sizes?.[0].label),
+  )
+
   const unit =
-    (product?.price ?? 0) +
+    (selectedSize?.price ?? product?.price ?? 0) +
     (withAddon && product?.addon ? product.addon.price : 0)
 
   return (
@@ -61,6 +67,32 @@ export default function ProductSheet() {
             <div className="p-4">
               <h3 className="text-lg font-black">{product.name}</h3>
               <p className="mt-1 text-sm text-ink-500">{product.desc}</p>
+
+              {product.sizes && (
+                <div className="mt-3 flex gap-2">
+                  {product.sizes.map((s) => (
+                    <button
+                      key={s.label}
+                      onClick={() => {
+                        setSize(s.label)
+                        haptic('light')
+                      }}
+                      className={`flex-1 rounded-2xl border-2 px-2 py-2 text-center transition-colors ${
+                        selectedSize?.label === s.label
+                          ? 'border-brand-600 bg-brand-50'
+                          : 'border-cream-200 bg-cream-50'
+                      }`}
+                    >
+                      <span className="block text-sm font-extrabold">
+                        {s.label}
+                      </span>
+                      <span className="block text-[11px] font-bold text-ink-500">
+                        {fmt(s.price)}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
 
               {product.addon && (
                 <button
@@ -110,10 +142,11 @@ export default function ProductSheet() {
                 </div>
                 <button
                   onClick={() => {
-                    addToCart(product, qty, withAddon)
+                    addToCart(product, qty, withAddon, selectedSize?.label)
                     haptic('success')
                     setQty(1)
                     setWithAddon(false)
+                    setSize(null)
                   }}
                   className="flex flex-1 items-center justify-between rounded-full bg-brand-600 px-5 py-3 font-extrabold text-white shadow-card active:scale-[0.98]"
                 >

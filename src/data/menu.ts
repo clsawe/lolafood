@@ -14,6 +14,12 @@ export const CATEGORIES: Category[] = [
 
 const CHISNOQ = { id: 'chisnoq', name: 'Chisnoq sous', price: 3_000 }
 
+const GAZLANGAN_HAJMLAR = [
+  { label: '0,5 l', price: 8_000 },
+  { label: '1 l', price: 12_000 },
+  { label: '1,5 l', price: 16_000 },
+]
+
 export const PRODUCTS: Product[] = [
   {
     id: 'hotdog-1',
@@ -228,35 +234,39 @@ export const PRODUCTS: Product[] = [
   {
     id: 'ich-cola',
     category: 'ichimliklar',
-    name: 'Coca-Cola 0,5 l',
+    name: 'Coca-Cola',
     desc: 'Sovutilgan gazlangan ichimlik',
-    price: 10_000,
+    price: 8_000,
     img: IMAGES.cola,
+    sizes: GAZLANGAN_HAJMLAR,
     popular: true,
   },
   {
     id: 'ich-fanta',
     category: 'ichimliklar',
-    name: 'Fanta 0,5 l',
+    name: 'Fanta',
     desc: 'Apelsin taʼmidagi gazlangan ichimlik',
-    price: 10_000,
+    price: 8_000,
     img: IMAGES.fanta,
+    sizes: GAZLANGAN_HAJMLAR,
   },
   {
     id: 'ich-sprite',
     category: 'ichimliklar',
-    name: 'Sprite 0,5 l',
+    name: 'Sprite',
     desc: 'Limon taʼmidagi gazlangan ichimlik',
-    price: 10_000,
+    price: 8_000,
     img: IMAGES.sprite,
+    sizes: GAZLANGAN_HAJMLAR,
   },
   {
     id: 'ich-icetea',
     category: 'ichimliklar',
-    name: 'Ice Tea 0,5 l',
+    name: 'Ice Tea',
     desc: 'Sovutilgan shirin choy',
-    price: 10_000,
+    price: 8_000,
     img: IMAGES.icetea,
+    sizes: GAZLANGAN_HAJMLAR,
   },
   {
     id: 'ich-suv',
